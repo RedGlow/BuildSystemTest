@@ -22,3 +22,8 @@ jobs:
         relative_project_path: ./
         archive_output: true
         cache: true
+    - name: upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: archives
+        path: ~/.local/share/godot/archives/
