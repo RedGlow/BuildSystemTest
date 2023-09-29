@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://bew3qpw4frtvu"]
+
+[ext_resource type="Script" path="res://showtext/ShowText.cs" id="1_i222p"]
+[ext_resource type="Resource" uid="uid://dgy11yfmi553i" path="res://showtext/story.ink" id="2_e37ph"]
+
+[node name="MainScene" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("root")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_i222p")
+root = NodePath("Container")
+story = ExtResource("2_e37ph")
+
+[node name="Container" type="VBoxContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
