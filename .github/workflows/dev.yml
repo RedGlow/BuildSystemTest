@@ -5,6 +5,6 @@ jobs:
   export_game_dev:
     uses: ./.github/workflows/export_game.yml
     with:
-      project_name: buildsystemtestprivate
+      project_name: ${{ vars.PRIVATE_PROJECT_NAME }}
     secrets:
       BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}

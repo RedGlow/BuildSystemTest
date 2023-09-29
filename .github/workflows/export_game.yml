@@ -62,7 +62,7 @@ jobs:
         BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
         CHANNEL: linux
         ITCH_GAME: ${{ inputs.project_name }}
-        ITCH_USER: redglow
+        ITCH_USER: ${{ vars.ITCH_USER }}
         PACKAGE: ./linux_build
         VERSION: ${{ inputs.version }}
   upload_to_itch_windows:
@@ -84,6 +84,6 @@ jobs:
         BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
         CHANNEL: windows
         ITCH_GAME: ${{ inputs.project_name }}
-        ITCH_USER: redglow
+        ITCH_USER: ${{ vars.ITCH_USER }}
         PACKAGE: ./windows_build
         VERSION: ${{ inputs.version }}

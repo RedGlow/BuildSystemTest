@@ -25,7 +25,7 @@ jobs:
     uses: ./.github/workflows/export_game.yml
     needs: extract_version
     with:
-      project_name: buildsystemtest
+      project_name: ${{ vars.PUBLIC_PROJECT_NAME }}
       version: ${{ needs.extract_version.outputs.version }}
     secrets:
       BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
