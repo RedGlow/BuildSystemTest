@@ -18,6 +18,10 @@ jobs:
     outputs:
       build_directory: ${{ steps.export.outputs.build_directory }}
     steps:
+    - name: print
+      run: |
+        echo project_name = "${{ inputs.project_name }}""
+        echo version = "${{ inputs.version }}""
     - name: checkout
       uses: actions/checkout@v3.3.0
       with:

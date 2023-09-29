@@ -1,5 +1,8 @@
 on:
-  push
+  # push
+  issues:
+    types:
+      - opened
 
 jobs:
   export_game_dev:

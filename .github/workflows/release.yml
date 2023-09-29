@@ -8,15 +8,19 @@ jobs:
     name: Extract version from tag
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.extract_version.outputs.MAJOR }}.${{ steps.extract_version.outputs.MINOR }}.${{ steps.extract_version.outputs.PATCH }}
+      version: ${{ steps.extract_version.outputs.version }}
     steps:
     - name: checkout
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
     - name: extract version
-      id: extract_version
       uses: damienaicheh/extract-version-from-tag-action@v1.1.0
+    - name: save version
+      id: extract_version
+      run: |
+        echo "version=$MAJOR.$MINOR.$PATCH"
+        echo "version=$MAJOR.$MINOR.$PATCH" >> "$GITHUB_OUTPUT"
   export_game_release:
     uses: ./.github/workflows/export_game.yml
     needs: extract_version
