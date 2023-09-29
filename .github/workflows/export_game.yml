@@ -70,6 +70,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: export_game
     steps:
+    - name: print
+      run: |
+        echo "project name = ${{ inputs.project_name }}; version = ${{ inputs.version }}"
     - name: download windows build
       uses: actions/download-artifact@v3
       with:
