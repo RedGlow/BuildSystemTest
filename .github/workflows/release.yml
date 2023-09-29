@@ -4,69 +4,24 @@ on:
       - v**
 
 jobs:
-  export_game:
-    name: Export game
+  extract_version:
+    name: Extract version from tag
     runs-on: ubuntu-latest
     outputs:
-      build_directory: ${{ steps.export.outputs.build_directory }}
+      version: ${{ steps.extract_version.outputs.MAJOR }}.${{ steps.extract_version.outputs.MINOR }}.${{ steps.extract_version.outputs.PATCH }}
     steps:
     - name: checkout
-      uses: actions/checkout@v3.3.0
+      uses: actions/checkout@v3
       with:
-        lfs: true
-    - name: dotnet build
-      run: dotnet build
-    - name: export game
-      id: export
-      uses: firebelley/godot-export@v5.2.1
-      with:
-        godot_executable_download_url: https://downloads.tuxfamily.org/godotengine/4.1.1/mono/Godot_v4.1.1-stable_mono_linux_x86_64.zip
-        godot_export_templates_download_url: https://downloads.tuxfamily.org/godotengine/4.1.1/mono/Godot_v4.1.1-stable_mono_export_templates.tpz
-        relative_project_path: ./
-        cache: true
-    - name: upload windows artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: windows_build
-        path: ${{ steps.export.outputs.build_directory }}/Windows Desktop
-    - name: upload linux artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: linux_build
-        path: ${{ steps.export.outputs.build_directory }}/LinuxX11
-  upload_to_itch_linux:
-    name: Upload linux build to itch.io
-    runs-on: ubuntu-latest
-    needs: export_game
-    steps:
-    - name: download linux build
-      uses: actions/download-artifact@v3
-      with:
-        name: linux_build
-        path: ./linux_build
-    - name: upload linux build
-      uses: manleydev/butler-publish-itchio-action@master
-      env:
-        BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
-        CHANNEL: linux
-        ITCH_GAME: buildsystemtestprivate
-        ITCH_USER: redglow
-        PACKAGE: ./linux_build
-  upload_to_itch_windows:
-    name: Upload windows build to itch.io
-    runs-on: ubuntu-latest
-    needs: export_game
-    steps:
-    - name: download windows build
-      uses: actions/download-artifact@v3
-      with:
-        name: windows_build
-        path: ./windows_build
-    - name: upload windows build
-      uses: manleydev/butler-publish-itchio-action@master
-      env:
-        BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
-        CHANNEL: windows
-        ITCH_GAME: buildsystemtestprivate
-        ITCH_USER: redglow
-        PACKAGE: ./windows_build
+        fetch-depth: 0
+    - name: extract version
+      id: extract_version
+      uses: damienaicheh/extract-version-from-tag-action@v1.1.0
+  export_game_release:
+    uses: ./.github/workflows/export_game.yml
+    needs: extract_version
+    with:
+      project_name: buildsystemtest
+      version: ${{ needs.extract_version.outputs.version }}
+    secrets:
+      BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
