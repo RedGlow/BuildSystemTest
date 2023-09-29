@@ -41,6 +41,7 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: linux_build
+        path: ./linux_build
     - name: check contents
       run: ls -R
     - name: upload linux build
