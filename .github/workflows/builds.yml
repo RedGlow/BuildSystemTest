@@ -5,7 +5,8 @@ jobs:
   export_game:
     name: Export game
     runs-on: ubuntu-latest
-    permissions: write-all
+    outputs:
+      build_directory: ${{ steps.export.outputs.build_directory }}
     steps:
     - name: checkout
       uses: actions/checkout@v3.3.0
@@ -21,13 +22,31 @@ jobs:
         godot_export_templates_download_url: https://downloads.tuxfamily.org/godotengine/4.1.1/mono/Godot_v4.1.1-stable_mono_export_templates.tpz
         relative_project_path: ./
         cache: true
+  upload_to_itch:
+    name: Upload to itch.io
+    runs-on: ubuntu-latest
+    needs: export_game
+    steps:
+    - name: upload windows build
+      uses: manleydev/butler-publish-itchio-action@master
+      env:
+        BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+        CHANNEL: windows
+        ITCH_GAME: buildsystemtestprivate
+        ITCH_USER: redglow
+        PACKAGE: ${{ needs.export_game.outputs.build_directory }}/Windows Desktop
+  upload_artifacts:
+    name: Upload artifacts
+    runs-on: ubuntu-latest
+    needs: export_game
+    steps:
     - name: upload windows artifact
       uses: actions/upload-artifact@v3
       with:
         name: windows build
-        path: ${{ steps.export.outputs.build_directory }}/Windows Desktop
+        path: ${{ needs.export_game.outputs.build_directory }}/Windows Desktop
     - name: upload linux artifact
       uses: actions/upload-artifact@v3
       with:
         name: linux build
-        path: ${{ steps.export.outputs.build_directory }}/LinuxX11
+        path: ${{ needs.export_game.outputs.build_directory }}/LinuxX11
