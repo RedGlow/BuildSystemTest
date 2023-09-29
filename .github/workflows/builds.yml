@@ -26,4 +26,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: archives
-        path: ~/.local/share/godot/archives/
+        path: ~/.local/share/godot/archives/*.zip
