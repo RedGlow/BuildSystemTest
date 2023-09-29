@@ -25,9 +25,9 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: windows build
-        path: ${{ steps.export.outputs.archive_directory }}/Windows Desktop
+        path: ${{ steps.export.outputs.build_directory }}/Windows Desktop
     - name: upload linux artifact
       uses: actions/upload-artifact@v3
       with:
         name: linux build
-        path: ${{ steps.export.outputs.archive_directory }}/LinuxX11
+        path: ${{ steps.export.outputs.build_directory }}/LinuxX11
