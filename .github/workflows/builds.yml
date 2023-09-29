@@ -22,17 +22,17 @@ jobs:
         godot_export_templates_download_url: https://downloads.tuxfamily.org/godotengine/4.1.1/mono/Godot_v4.1.1-stable_mono_export_templates.tpz
         relative_project_path: ./
         cache: true
-    # - name: upload windows artifact
-    #   uses: actions/upload-artifact@v3
-    #   with:
-    #     name: windows_build
-    #     path: ${{ steps.export.outputs.build_directory }}/Windows Desktop
+    - name: upload windows artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: windows_build
+        path: ${{ steps.export.outputs.build_directory }}/Windows Desktop
     - name: upload linux artifact
       uses: actions/upload-artifact@v3
       with:
         name: linux_build
         path: ${{ steps.export.outputs.build_directory }}/LinuxX11
-  upload_to_itch:
+  upload_to_itch_linux:
     name: Upload linux build to itch.io
     runs-on: ubuntu-latest
     needs: export_game
@@ -42,8 +42,6 @@ jobs:
       with:
         name: linux_build
         path: ./linux_build
-    - name: check contents
-      run: ls -R
     - name: upload linux build
       uses: manleydev/butler-publish-itchio-action@master
       env:
@@ -52,3 +50,21 @@ jobs:
         ITCH_GAME: buildsystemtestprivate
         ITCH_USER: redglow
         PACKAGE: ./linux_build
+  upload_to_itch_windows:
+    name: Upload windows build to itch.io
+    runs-on: ubuntu-latest
+    needs: export_game
+    steps:
+    - name: download windows build
+      uses: actions/download-artifact@v3
+      with:
+        name: windows_build
+        path: ./windows_build
+    - name: upload windows build
+      uses: manleydev/butler-publish-itchio-action@master
+      env:
+        BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+        CHANNEL: windows
+        ITCH_GAME: buildsystemtestprivate
+        ITCH_USER: redglow
+        PACKAGE: ./windows_build
