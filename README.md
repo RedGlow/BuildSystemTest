@@ -43,7 +43,7 @@ This main workflow is called by `dev.yml` and `release.yml`. The first one is ac
 
 Well, this repo is the example.
 
-You can fint the [public game here](https://redglow.itch.io/buildsystemtest), and the [restricted game here](https://redglow.itch.io/buildsystemtestprivate).
+You can fint the [public game here](https://redglow.itch.io/buildsystemtest), and the [restricted game here](https://redglow.itch.io/buildsystemtestprivate) (with password "buildsystem").
 
 [^1]: (actually, only the "CD" part)
 [^2]: only versions in the form vMajor.Minor.Patch are supported right now, nothing fancier
