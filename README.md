@@ -1,4 +1,4 @@
-# CI/CD[^1] with Godot 4 + C# + itch
+# CI/CD with Godot 4 + C# + itch
 
 This is a small repo demonstrating a possible CI/CD[^1] setup using a Godot 4 C# example project.
 
@@ -38,6 +38,12 @@ Mostly thanks to the work of other people!
 The main workflow is `export_game.yml`. The first job (`export_game`) checks out the project, builds the dotnet part, exports it for windows and linux, and uploads the produced exports as artifacts. This way two consecutive jobs (`upload_to_itch_windows` and `upload_to_itch_linux`) can pick up the artifacts and upload them to itch.
 
 This main workflow is called by `dev.yml` and `release.yml`. The first one is activated on every push, and just calls the main workflow pointing to the restricted game. `release.yml`, instead, is triggered only when a tag containing a semver[^2] pattern starting with "v" is pushed, and first checks out the project to compute the current version, then calls `export_game.yml` passing the version and the public game.
+
+## An example
+
+Well, this repo is the example.
+
+You can fint the [public game here](https://redglow.itch.io/buildsystemtest), and the [restricted game here](https://redglow.itch.io/buildsystemtestprivate).
 
 [^1]: (actually, only the "CD" part)
 [^2]: only versions in the form vMajor.Minor.Patch are supported right now, nothing fancier
